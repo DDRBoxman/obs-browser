@@ -3,7 +3,7 @@
 #include <include/cef_parser.h>
 
 #include "browser-scheme.hpp"
-#include "obs.h"
+//#include "obs.h"
 
 
 BrowserSchemeHandlerFactory::BrowserSchemeHandlerFactory()
@@ -34,15 +34,16 @@ bool BrowserSchemeHandler::ProcessRequest(CefRefPtr<CefRequest> request,
 	CefURLParts parts;
 	CefParseURL(request->GetURL(), parts);
 
-	std::wstring path = CefString(&parts.path);
-
-	path = CefURIDecode(path, true, cef_uri_unescape_rule_t::UU_SPACES);
-	path = CefURIDecode(path, true, cef_uri_unescape_rule_t::UU_URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS);
+    std::string path = CefString(&parts.path);
+    
+    path = CefURIDecode(path, true, cef_uri_unescape_rule_t::UU_SPACES);
+    path = CefURIDecode(path, true, cef_uri_unescape_rule_t::UU_URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS);
+    
 #ifdef WIN32
 	//blog(LOG_INFO, "%s", path.erase(0,1));
-	inputStream.open(path.erase(0,1), std::ifstream::binary);
+	inputStream.open(widen(path.erase(0,1)), std::ifstream::binary);
 #else
-	inputStream.open(path, std::ifstream::binary);
+	inputStream.open(path.c_str(), std::ifstream::binary);
 #endif
 
 	// Set fileName for use in GetResponseHeaders
@@ -69,11 +70,11 @@ void BrowserSchemeHandler::GetResponseHeaders(CefRefPtr<CefResponse> response,
 		return;
 	}
 
-	std::wstring fileExtension = fileName.substr(
-		fileName.find_last_of(L".") + 1);
+	std::string fileExtension = fileName.substr(
+		fileName.find_last_of(".") + 1);
 	
-	if (fileExtension.compare(L"woff2") == 0) {
-		fileExtension = L"woff";
+	if (fileExtension.compare("woff2") == 0) {
+		fileExtension = "woff";
 	}
 	
 	std::transform(fileExtension.begin(), fileExtension.end(),
