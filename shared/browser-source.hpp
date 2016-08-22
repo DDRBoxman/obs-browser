@@ -46,6 +46,7 @@ public:
 	const std::string& GetCss() const { return css; }
 	uint32_t GetWidth() const { return width; }
 	uint32_t GetHeight() const { return height; }
+	void SetSize(uint32_t width, uint32_t height);
 	obs_source_t *GetSource() const { return source; }
 	const bool GetShutdown() const { return shutdown; }
 

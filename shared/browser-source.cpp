@@ -57,6 +57,13 @@ void BrowserSource::UpdateBrowser()
 			browserSettings, browserListener);
 }
 
+void BrowserSource::SetSize(uint32_t width, uint32_t height)
+{
+	if (browserIdentifier != 0) {
+		BrowserManager::Instance()->ResizeBrowser(browserIdentifier);
+	}
+}
+
 void BrowserSource::SendMouseClick(const struct obs_mouse_event *event,
 		int32_t type, bool mouseUp, uint32_t clickCount)
 {

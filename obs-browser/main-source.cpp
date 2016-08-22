@@ -124,6 +124,11 @@ static uint32_t browser_source_get_height(void *data)
 	return bs->GetHeight();
 }
 
+static void browser_source_set_size(void *data, uint32_t width, uint32_t height)
+{
+	BrowserSource *bs = static_cast<BrowserSource *>(data);
+	bs->SetSize(width, height);
+}
 
 static const char *browser_source_get_name(void *)
 {
@@ -243,6 +248,7 @@ create_browser_source_info()
 	browser_source_info.update = browser_source_update;
 	browser_source_info.get_width = browser_source_get_width;
 	browser_source_info.get_height = browser_source_get_height;
+	browser_source_info.set_size = browser_source_set_size;
 	browser_source_info.get_properties = browser_source_get_properties;
 	browser_source_info.get_defaults = browser_source_get_defaults;
 	browser_source_info.video_render = browser_source_render;
